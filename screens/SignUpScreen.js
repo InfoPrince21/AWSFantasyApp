@@ -1,33 +1,38 @@
+import React, { useState } from "react";
+import { View, TextInput, Button, StyleSheet } from "react-native";
+import { Auth } from "aws-amplify";
+
 const SignUpScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function handleSignUp() {
     try {
       const { user } = await Auth.signUp({
-        username,
+        username: email, // Using email as username
         password,
         attributes: {
-          email, // optional
+          email,
         },
       });
       console.log("user signed up:", user);
-      navigation.navigate("ConfirmSignUpScreen", { username });
+      navigation.navigate("ConfirmSignUpScreen", { email });
     } catch (error) {
       console.error("error signing up:", error);
     }
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
       />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
@@ -37,3 +42,20 @@ const SignUpScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  input: {
+    width: "80%",
+    height: 40,
+    margin: 10,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
+
+export default SignUpScreen;

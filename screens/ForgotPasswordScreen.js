@@ -21,3 +21,5 @@ const ForgotPasswordScreen = ({ navigation }) => {
     </View>
   );
 };
+
+export default ForgotPasswordScreen;

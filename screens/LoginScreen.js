@@ -1,14 +1,14 @@
 import { Auth } from "aws-amplify";
-import { useState } from "react";
-import { View, TextInput, Button, Text } from "react-native";
+import React, { useState } from "react";
+import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function handleSignIn() {
     try {
-      const user = await Auth.signIn(username, password);
+      const user = await Auth.signIn(email, password);
       console.log("user signed in:", user);
       // handle user navigation post sign-in
     } catch (error) {
@@ -17,13 +17,16 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
       />
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
@@ -41,3 +44,20 @@ const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  input: {
+    width: "80%",
+    height: 40,
+    margin: 10,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
+
+export default LoginScreen;
