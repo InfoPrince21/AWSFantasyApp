@@ -1,0 +1,38 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fantasystaffapp-dev-36a25-authRole",
+      "UnauthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-dev-36a25-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-dev-36a25-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-fantasystaffapp-dev-36a25-deployment",
+      "UnauthRoleName": "amplify-fantasystaffapp-dev-36a25-unauthRole",
+      "StackName": "amplify-fantasystaffapp-dev-36a25",
+      "StackId": "arn:aws:cloudformation:us-west-2:339712952329:stack/amplify-fantasystaffapp-dev-36a25/d704e720-fc75-11ee-9046-06fdae4fa417",
+      "AmplifyAppId": "du9qhvtvjpttp"
+    },
+    "categories": {
+      "auth": {
+        "fantasystaffappeb66ba87": {}
+      }
+    }
+  },
+  "amplifyenv": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fantasystaffapp-amplifyenv-932c3-authRole",
+      "UnauthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-amplifyenv-932c3-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-amplifyenv-932c3-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-fantasystaffapp-amplifyenv-932c3-deployment",
+      "UnauthRoleName": "amplify-fantasystaffapp-amplifyenv-932c3-unauthRole",
+      "StackName": "amplify-fantasystaffapp-amplifyenv-932c3",
+      "StackId": "arn:aws:cloudformation:us-east-1:339712952329:stack/amplify-fantasystaffapp-amplifyenv-932c3/21ee59f0-fc86-11ee-90c1-0e55f48ba0d7",
+      "AmplifyAppId": "dlmqhh7lw4i37"
+    },
+    "categories": {
+      "auth": {
+        "FantasyStaffApp": {}
+      }
+    }
+  }
+}
