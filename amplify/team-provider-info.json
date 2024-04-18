@@ -31,7 +31,8 @@
     },
     "categories": {
       "auth": {
-        "FantasyStaffApp": {}
+        "FantasyStaffApp": {},
+        "userPoolGroups": {}
       }
     }
   }

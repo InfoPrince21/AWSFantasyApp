@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import awsmobile from "./aws-exports";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import store from "./store/index.js";
+import awsExports from "./src/aws-exports";
 import { Amplify, Auth } from "aws-amplify";
-import config from "./src/aws-exports";
 import {
   HomeScreen,
   TeamsScreen,
@@ -24,13 +25,16 @@ import {
   SignUpScreen,
   ForgotPasswordScreen,
   ConfirmSignUpScreen,
+  ProfileScreen
 } from "./screens";
 
-Amplify.configure(config);
+Amplify.configure(awsExports);
+console.log(Auth);
 
 const Stack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
 
 function AuthStackNavigator() {
   return (
@@ -46,6 +50,7 @@ function AuthStackNavigator() {
         component={ConfirmSignUpScreen}
       />
     </AuthStack.Navigator>
+    
   );
 }
 
@@ -92,6 +97,7 @@ function App() {
             <Drawer.Screen name="StudyGuide" component={StudyGuideScreen} />
             <Drawer.Screen name="Game History" component={GameHistoryScreen} />
             <Drawer.Screen name="Records" component={RecordsScreen} />
+            <Drawer.Screen name="Profile" component={ProfileScreen} />
           </Drawer.Navigator>
         ) : (
           <AuthStackNavigator />

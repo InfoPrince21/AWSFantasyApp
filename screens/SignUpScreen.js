@@ -6,7 +6,8 @@ const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleSignUp() {
+  async function handleSignUp() 
+  {
     try {
       const { user } = await Auth.signUp({
         username: email, // Using email as username
