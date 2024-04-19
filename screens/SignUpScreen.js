@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
+import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { supabase } from "../supabaseClient"; // Ensure this points to your initialized Supabase client
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -8,18 +8,20 @@ const SignUpScreen = ({ navigation }) => {
 
   async function handleSignUp() {
     try {
-      const { user } = await Auth.signUp({
-        username: email, // Using email as username
-        password,
-        attributes: {
-          email, // Ensuring that the email is also set as an attribute
-        },
+      // Supabase sign-up
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
       });
-      console.log("user signed up:", user);
-      // Navigate to the ConfirmSignUpScreen with email as a parameter
-      navigation.navigate("ConfirmSignUpScreen", { email });
+
+      if (error) throw error;
+
+      console.log("User signed up", data);
+      // Pass email to ConfirmSignUpScreen via navigation parameters
+      navigation.navigate("ConfirmSignUpScreen", { email: email });
     } catch (error) {
-      console.error("error signing up:", error);
+      console.error("Error signing up:", error.message);
+      Alert.alert("Sign Up Failed", error.message);
     }
   }
 

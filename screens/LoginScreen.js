@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
+import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { supabase } from "../supabaseClient"; // Ensure this points to your initialized Supabase client
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleSignIn() {
-    try {
-      const user = await Auth.signIn(email, password);
-      console.log("user signed in:", user);
-      navigation.navigate("Home"); // Navigate to the Home screen after successful login
-    } catch (error) {
-      console.error("error signing in:", error);
+  async function signInWithEmail() {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      console.error("Error signing in:", error.message);
+      Alert.alert("Sign In Failed", error.message);
+      return;
+    }
+
+    if (data) {
+      console.log("User signed in successfully:", data);
+      navigation.navigate("Home"); // Adjust as necessary to match your app's routing
     }
   }
 
@@ -32,14 +40,16 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Sign In" onPress={handleSignIn} />
+      <Button title="Sign In" onPress={signInWithEmail} />
       <Button
         title="Forgot Password?"
         onPress={() => navigation.navigate("ForgotPasswordScreen")}
+        color="#1E90FF" // Custom color for the button (optional)
       />
       <Button
-        title="No account? Sign up"
+        title="No account? Sign Up"
         onPress={() => navigation.navigate("SignUpScreen")}
+        color="#20B2AA" // Custom color for the button (optional)
       />
     </View>
   );
@@ -50,6 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
   },
   input: {
     width: "80%",

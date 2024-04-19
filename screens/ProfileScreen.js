@@ -1,28 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
+import { supabase } from "../supabaseClient"; // Ensure this points to your initialized Supabase client
 
 const ProfileScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
+    // Subscribe to Supabase auth changes
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session && session.user) {
+          setUserEmail(session.user.email); // Update email when session changes
+        } else {
+          setUserEmail(""); // Clear email if there is no session
+          navigation.navigate("HomePage"); // Redirect to home page if signed out
+        }
+      }
+    );
+
+    // Check initial user and set state
     fetchUserInfo();
+
+    return () => {
+      authListener.unsubscribe();
+    };
   }, []);
 
   const fetchUserInfo = async () => {
-    try {
-      const userInfo = await Auth.currentAuthenticatedUser();
-      setUserEmail(userInfo.attributes.email); // Adjust based on the attribute name you have in your user pool
-    } catch (error) {
-      console.error("Error fetching user info:", error);
+    const session = supabase.auth.session();
+    if (session && session.user) {
+      setUserEmail(session.user.email); // Set user email from current session
     }
   };
 
   const handleSignOut = async () => {
     try {
-      await Auth.signOut();
-      navigation.replace("LoginScreen"); // Adjust navigation as necessary
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      // Redundant navigation, as the auth listener already handles this:
+      // navigation.navigate("HomePage");
     } catch (error) {
       console.error("Error signing out: ", error);
+      Alert.alert("Sign Out Failed", error.message);
     }
   };
 

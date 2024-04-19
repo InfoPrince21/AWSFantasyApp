@@ -1,48 +1,73 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
+import { View, TextInput, Button, Text, StyleSheet, Alert } from "react-native";
+import { supabase } from "../supabaseClient"; // Ensure this points to your initialized Supabase client
 
-const ConfirmSignUpScreen = ({ route, navigation }) => {
-  const { email } = route.params; // Corrected to use email instead of username
+const ConfirmEmailScreen = ({ route, navigation }) => {
+  const { email } = route.params; // Retrieve the email from navigation parameters
   const [code, setCode] = useState("");
-  const [message, setMessage] = useState(""); // For user feedback
-  const [isLoading, setIsLoading] = useState(false); // For loading state
 
-  async function handleConfirmSignUp() {
-    if (!code) {
-      setMessage("Please enter the verification code");
+  const confirmSignUp = async () => {
+    if (!code.trim()) {
+      Alert.alert(
+        "Validation Error",
+        "Please enter the verification code sent to your email."
+      );
       return;
     }
-    setIsLoading(true);
+
     try {
-      await Auth.confirmSignUp(email, code); // Corrected to use email instead of username
-      console.log("Successfully confirmed sign up");
-      setMessage("Confirmation successful! Redirecting...");
-      setTimeout(() => navigation.navigate("Home"), 2000); // Delay to show message
+      // Verify the OTP using the parameters you specified
+      const { data, error } = await supabase.auth.verifyOtp({
+        token: code, // The OTP code entered by the user
+        email: email, // Email address to which the OTP was sent
+        type: "email", // The type of verification, which is email in this case
+      });
+
+      if (error) throw error;
+      Alert.alert("Success", "Email verified! You are now logged in.");
+      // navigation.navigate("LoginScreen"); // Navigate to login screen upon successful verification
     } catch (error) {
-      console.error("Error confirming sign up", error);
-      setMessage(error.message || "Failed to confirm sign up");
-    } finally {
-      setIsLoading(false);
+      Alert.alert("Error", error.message);
     }
-  }
+  };
+
+  const resendConfirmationCode = async () => {
+    try {
+      // Trigger Supabase to resend the OTP to the user's email
+      const { error } = await supabase.auth.api.sendEmailChangeToken(email);
+      if (error) throw error;
+      Alert.alert(
+        "Success",
+        "Verification code sent again. Please check your email."
+      );
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  const goToLogin = () => {
+    navigation.navigate("LoginScreen"); // Provide an option to go to login page regardless of OTP verification
+  };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Confirm Your Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="Verification Code"
+        placeholder="Enter your verification code"
         value={code}
         onChangeText={setCode}
         keyboardType="numeric"
-        editable={!isLoading}
+        autoCapitalize="none"
+        autoCorrect={false}
       />
+      <Button title="Verify Email" onPress={confirmSignUp} />
       <Button
-        title="Confirm Sign Up"
-        onPress={handleConfirmSignUp}
-        disabled={isLoading}
+        title="Resend Code"
+        onPress={resendConfirmationCode}
+        color="#20B2AA"
       />
-      {message ? <Text style={styles.message}>{message}</Text> : null}
+      <Button title="Go to Login" onPress={goToLogin} color="#1E90FF" />
     </View>
   );
 };
@@ -54,17 +79,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  input: {
-    width: "100%",
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    padding: 10,
+  title: {
+    fontSize: 20,
+    marginBottom: 15,
   },
-  message: {
-    marginTop: 15,
-    color: "red",
+  input: {
+    width: "80%",
+    height: 40,
+    marginVertical: 10,
+    borderWidth: 1,
+    padding: 10,
   },
 });
 
-export default ConfirmSignUpScreen;
+export default ConfirmEmailScreen;

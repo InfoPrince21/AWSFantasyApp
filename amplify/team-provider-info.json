@@ -46,11 +46,26 @@
       "UnauthRoleName": "amplify-fantasystaffapp-newampenv-1120e-unauthRole",
       "StackName": "amplify-fantasystaffapp-newampenv-1120e",
       "StackId": "arn:aws:cloudformation:us-east-1:339712952329:stack/amplify-fantasystaffapp-newampenv-1120e/7ec9c320-fdf9-11ee-a2a0-122b3a680933",
-      "AmplifyAppId": "d1vy5murkthwp5"
+      "AmplifyAppId": "d1vy5murkthwp5",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-fantasystaffapp-newampenv-1120e-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
         "FantasyStaffApp": {}
+      },
+      "function": {
+        "FantasyStaffAppCustomMessage": {
+          "REDIRECTURL": "Home",
+          "EMAILSUBJECT": "Confirm Email",
+          "EMAILMESSAGE": "confirm here",
+          "deploymentBucketName": "amplify-fantasystaffapp-newampenv-1120e-deployment",
+          "s3Key": "amplify-builds/FantasyStaffAppCustomMessage-74476e6742355667302b-build.zip"
+        },
+        "FantasyStaffAppPostConfirmation": {
+          "GROUP": "AppPlayers",
+          "deploymentBucketName": "amplify-fantasystaffapp-newampenv-1120e-deployment",
+          "s3Key": "amplify-builds/FantasyStaffAppPostConfirmation-6c797a52586b566c7a34-build.zip"
+        }
       }
     }
   }

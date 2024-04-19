@@ -2,7 +2,26 @@
   "auth": {
     "FantasyStaffApp": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage",
+          "triggerProvider": "Cognito"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "FantasyStaffAppPostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "OFF",
         "mfaTypes": [
@@ -25,6 +44,84 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "FantasyStaffAppCustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "FantasyStaffAppPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_FantasyStaffAppCustomMessage_EMAILMESSAGE": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppCustomMessage_EMAILSUBJECT": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppCustomMessage_REDIRECTURL": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppCustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppCustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppCustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppPostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_FantasyStaffAppPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "FantasyStaffAppPostConfirmation"
+        }
+      ]
     }
   }
 }

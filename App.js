@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import store from "./store/index.js";
+import { supabase } from "./supabaseClient"; // Ensure this points to your initialized Supabase client
 import {
   HomeScreen,
   TeamsScreen,
@@ -18,34 +19,34 @@ import {
   StudyGuideScreen,
   GameHistoryScreen,
   RecordsScreen,
-  LoginScreen,
-  SignUpScreen,
-  ForgotPasswordScreen,
-  ConfirmSignUpScreen,
   ProfileScreen,
+  LoginScreen,
+  ForgotPasswordScreen,
+  SignUpScreen,
+  ConfirmSignUpScreen,
+  NextStepScreen,
+  SetupProfileScreen,
 } from "./screens";
 
-import { Amplify, Auth } from "aws-amplify";
-import amplifyconfig from "./src/amplifyconfiguration.json";
-Amplify.configure(amplifyconfig);
-
 const Drawer = createDrawerNavigator();
-const AuthStack = createStackNavigator();
+const Stack = createStackNavigator();
 
-function AuthStackNavigator() {
+function AuthNavigator() {
   return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
-      <AuthStack.Screen name="SignUpScreen" component={SignUpScreen} />
-      <AuthStack.Screen
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen
         name="ForgotPasswordScreen"
         component={ForgotPasswordScreen}
       />
-      <AuthStack.Screen
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen
         name="ConfirmSignUpScreen"
         component={ConfirmSignUpScreen}
       />
-    </AuthStack.Navigator>
+      <Stack.Screen name="NextStepScreen" component={NextStepScreen} />
+      <Stack.Screen name="SetupProfileScreen" component={SetupProfileScreen} />
+    </Stack.Navigator>
   );
 }
 
@@ -74,22 +75,29 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    checkAuthState();
-  }, []);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session) {
+          setIsAuthenticated(true); // Set authenticated true when there's a session
+        } else {
+          setIsAuthenticated(false); // Set authenticated false if there's no session
+        }
 
-  const checkAuthState = async () => {
-    try {
-      await Auth.currentAuthenticatedUser();
-      setIsAuthenticated(true);
-    } catch (err) {
-      setIsAuthenticated(false);
-    }
-  };
+        // Log the event and session for debugging purposes
+        console.log(event, session);
+      }
+    );
+
+    // Cleanup function to unsubscribe from the auth changes
+    return () => {
+      authListener.unsubscribe();
+    };
+  }, []);
 
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {isAuthenticated ? <DrawerNavigator /> : <AuthStackNavigator />}
+        {isAuthenticated ? <DrawerNavigator /> : <AuthNavigator />}
       </NavigationContainer>
     </Provider>
   );
