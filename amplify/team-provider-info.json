@@ -35,5 +35,23 @@
         "userPoolGroups": {}
       }
     }
+  },
+  "newampenv": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fantasystaffapp-newampenv-1120e-authRole",
+      "UnauthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-newampenv-1120e-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::339712952329:role/amplify-fantasystaffapp-newampenv-1120e-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-fantasystaffapp-newampenv-1120e-deployment",
+      "UnauthRoleName": "amplify-fantasystaffapp-newampenv-1120e-unauthRole",
+      "StackName": "amplify-fantasystaffapp-newampenv-1120e",
+      "StackId": "arn:aws:cloudformation:us-east-1:339712952329:stack/amplify-fantasystaffapp-newampenv-1120e/7ec9c320-fdf9-11ee-a2a0-122b3a680933",
+      "AmplifyAppId": "d1vy5murkthwp5"
+    },
+    "categories": {
+      "auth": {
+        "FantasyStaffApp": {}
+      }
+    }
   }
 }

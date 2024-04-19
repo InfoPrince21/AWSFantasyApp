@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
 
 const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleSignUp() 
-  {
+  async function handleSignUp() {
     try {
       const { user } = await Auth.signUp({
         username: email, // Using email as username
         password,
         attributes: {
-          email,
+          email, // Ensuring that the email is also set as an attribute
         },
       });
       console.log("user signed up:", user);
+      // Navigate to the ConfirmSignUpScreen with email as a parameter
       navigation.navigate("ConfirmSignUpScreen", { email });
     } catch (error) {
       console.error("error signing up:", error);

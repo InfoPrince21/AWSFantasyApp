@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify";
 
 const ProfileScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");

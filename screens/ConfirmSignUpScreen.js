@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
 
 const ConfirmSignUpScreen = ({ route, navigation }) => {
-  const { username } = route.params;
+  const { email } = route.params; // Corrected to use email instead of username
   const [code, setCode] = useState("");
   const [message, setMessage] = useState(""); // For user feedback
   const [isLoading, setIsLoading] = useState(false); // For loading state
@@ -15,8 +15,8 @@ const ConfirmSignUpScreen = ({ route, navigation }) => {
     }
     setIsLoading(true);
     try {
-      await Auth.confirmSignUp(username, code);
-      console.log("Successfully confirmed signed up");
+      await Auth.confirmSignUp(email, code); // Corrected to use email instead of username
+      console.log("Successfully confirmed sign up");
       setMessage("Confirmation successful! Redirecting...");
       setTimeout(() => navigation.navigate("Home"), 2000); // Delay to show message
     } catch (error) {

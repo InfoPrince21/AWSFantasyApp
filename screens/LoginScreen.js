@@ -1,6 +1,6 @@
-import { Auth } from "aws-amplify";
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
+import { Auth } from "aws-amplify"; // Import Auth from AWS Amplify
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       const user = await Auth.signIn(email, password);
       console.log("user signed in:", user);
-      // handle user navigation post sign-in
+      navigation.navigate("Home"); // Navigate to the Home screen after successful login
     } catch (error) {
       console.error("error signing in:", error);
     }
