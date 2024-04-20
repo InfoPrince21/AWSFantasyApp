@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import store from "./store/index.js";
+import { store } from "./store/index.js";
 import { supabase } from "./supabaseClient"; // Ensure this points to your initialized Supabase client
 import {
   HomeScreen,

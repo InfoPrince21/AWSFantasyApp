@@ -1,11 +1,40 @@
-import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./reducers"; // Make sure this is correctly set up to combine your reducers
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(/* other middleware if any */),
-  devTools: process.env.NODE_ENV !== "production", // Automatically use Redux DevTools in development
+// Define the initial state and reducers using createSlice
+const userSlice = createSlice({
+  name: "user",
+  initialState: {
+    users: [],
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    fetchUsersRequest(state) {
+      state.loading = true;
+    },
+    fetchUsersSuccess(state, action) {
+      state.loading = false;
+      state.users = action.payload;
+      state.error = null;
+    },
+    fetchUsersFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  },
 });
 
-export default store;
+// Extract the action creators and the reducer
+const { actions, reducer: userReducer } = userSlice;
+const { fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure } = actions;
+
+// Configure the store
+const store = configureStore({
+  reducer: {
+    user: userReducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+});
+
+// Export Actions and Store
+export { fetchUsersRequest, fetchUsersSuccess, fetchUsersFailure, store };
