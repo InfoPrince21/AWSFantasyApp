@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
     if (data) {
       console.log("User signed in successfully:", data);
-      navigation.navigate("Home"); // Adjust as necessary to match your app's routing
+      // navigation.navigate("Home"); // Adjust as necessary to match your app's routing
     }
   }
 

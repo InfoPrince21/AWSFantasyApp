@@ -6,26 +6,29 @@ const ProfileScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
-    // Subscribe to Supabase auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session && session.user) {
-          setUserEmail(session.user.email); // Update email when session changes
-        } else {
-          setUserEmail(""); // Clear email if there is no session
-          navigation.navigate("HomePage"); // Redirect to home page if signed out
-        }
+    // Function to handle authentication state change
+    const handleAuthStateChange = (event, session) => {
+      if (session && session.user) {
+        setUserEmail(session.user.email); // Update email when session changes
+      } else {
+        setUserEmail(""); // Clear email if there is no session
+        navigation.navigate("Home"); // Redirect to home page if signed out
       }
-    );
+    };
+
+    // Subscribe to Supabase auth changes
+    const authListener = supabase.auth.onAuthStateChange(handleAuthStateChange);
 
     // Check initial user and set state
     fetchUserInfo();
 
+    // Unsubscribe from auth changes when component unmounts
     return () => {
       authListener.unsubscribe();
     };
   }, []);
 
+  // Function to fetch user info from current session
   const fetchUserInfo = async () => {
     const session = supabase.auth.session();
     if (session && session.user) {
@@ -33,12 +36,12 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
 
+  // Function to handle sign out
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      // Redundant navigation, as the auth listener already handles this:
-      // navigation.navigate("HomePage");
+      // No need for redundant navigation, as the auth listener already handles this
     } catch (error) {
       console.error("Error signing out: ", error);
       Alert.alert("Sign Out Failed", error.message);
