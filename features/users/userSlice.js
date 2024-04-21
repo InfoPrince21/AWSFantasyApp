@@ -9,7 +9,7 @@ const userSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Example synchronous reducer to update a user's details
+    // Synchronous reducer to update a user's details
     updateUser(state, action) {
       const index = state.users.findIndex(
         (user) => user.id === action.payload.id
@@ -36,5 +36,7 @@ const userSlice = createSlice({
   },
 });
 
+// Export the actions
 export const { updateUser } = userSlice.actions;
+// Correctly export the reducer
 export const userReducer = userSlice.reducer;
