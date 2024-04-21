@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUsers } from "../store/index.js"; // Adjust the import path as needed
+import  fetchUsers  from "../features/users/fetchUsers.js";
 
 const PlayersScreen = () => {
   const dispatch = useDispatch();
@@ -17,12 +17,12 @@ const PlayersScreen = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
- const renderItem = ({ item }) => (
-   <View style={styles.itemContainer}>
-     <Text style={styles.itemText}>{item.email}</Text>
-     {/* Displaying the user's email */}
-   </View>
- );
+  const renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemText}>{item.email}</Text>
+      {/* Displaying the user's email */}
+    </View>
+  );
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -39,7 +39,9 @@ const PlayersScreen = () => {
   return (
     <FlatList
       data={users}
-      keyExtractor={(item) => item.id.toString()} // Ensure your user object has an 'id' field
+      keyExtractor={(item, index) =>
+        item.id ? item.id.toString() : index.toString()
+      }
       renderItem={renderItem}
       contentContainerStyle={styles.listContainer}
     />

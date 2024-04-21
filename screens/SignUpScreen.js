@@ -18,7 +18,7 @@ const SignUpScreen = ({ navigation }) => {
 
       console.log("User signed up", data);
       // Pass email to ConfirmSignUpScreen via navigation parameters
-      navigation.navigate("ConfirmSignUpScreen", { email: email });
+      navigation.navigate("ConfirmSignUp", { email: email });
     } catch (error) {
       console.error("Error signing up:", error.message);
       Alert.alert("Sign Up Failed", error.message);

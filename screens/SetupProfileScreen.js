@@ -11,7 +11,7 @@ const SetupProfileScreen = ({ route, navigation }) => {
       // Removed AWS Amplify Auth.updateUserAttributes code
 
       Alert.alert("Success", "Profile updated successfully.");
-      navigation.navigate("HomeScreen"); // Navigate to home or another appropriate screen
+      navigation.navigate("Home"); // Navigate to home or another appropriate screen
     } catch (error) {
       Alert.alert("Error", error.message);
     }

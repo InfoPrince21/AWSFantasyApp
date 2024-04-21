@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import { store } from "./store/index.js";
-import { supabase } from "./supabaseClient"; // Ensure this points to your initialized Supabase client
+import { store } from "./store/store.js";
+import { supabase } from "./supabaseClient";
 import {
   HomeScreen,
   TeamsScreen,
@@ -35,17 +35,11 @@ function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen
-        name="ForgotPasswordScreen"
-        component={ForgotPasswordScreen}
-      />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-      <Stack.Screen
-        name="ConfirmSignUpScreen"
-        component={ConfirmSignUpScreen}
-      />
-      <Stack.Screen name="NextStepScreen" component={NextStepScreen} />
-      <Stack.Screen name="SetupProfileScreen" component={SetupProfileScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="ConfirmSignUp" component={ConfirmSignUpScreen} />
+      <Stack.Screen name="NextStep" component={NextStepScreen} />
+      <Stack.Screen name="SetupProfile" component={SetupProfileScreen} />
     </Stack.Navigator>
   );
 }
@@ -74,25 +68,22 @@ function DrawerNavigator() {
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const checkAuthState = useCallback(async (event, session) => {
+    if (session) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
-          setIsAuthenticated(true); // Set authenticated true when there's a session
-        } else {
-          setIsAuthenticated(false); // Set authenticated false if there's no session
-        }
+    const { data: authListener } =
+      supabase.auth.onAuthStateChange(checkAuthState);
 
-        // Log the event and session for debugging purposes
-        console.log(event, session);
-      }
-    );
-
-    // Cleanup function to unsubscribe from the auth changes
     return () => {
       authListener.unsubscribe();
     };
-  }, []);
+  }, [checkAuthState]);
 
   return (
     <Provider store={store}>

@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
     if (data) {
       console.log("User signed in successfully:", data);
-      // navigation.navigate("Home"); // Adjust as necessary to match your app's routing
+      navigation.navigate("Profile"); // Adjust as necessary to match your app's routing
     }
   }
 
@@ -43,12 +43,12 @@ const LoginScreen = ({ navigation }) => {
       <Button title="Sign In" onPress={signInWithEmail} />
       <Button
         title="Forgot Password?"
-        onPress={() => navigation.navigate("ForgotPasswordScreen")}
+        onPress={() => navigation.navigate("ForgotPassword")}
         color="#1E90FF" // Custom color for the button (optional)
       />
       <Button
         title="No account? Sign Up"
-        onPress={() => navigation.navigate("SignUpScreen")}
+        onPress={() => navigation.navigate("SignUp")}
         color="#20B2AA" // Custom color for the button (optional)
       />
     </View>
