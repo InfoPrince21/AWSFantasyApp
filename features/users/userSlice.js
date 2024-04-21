@@ -27,4 +27,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { reducer: userReducer } = userSlice;
+// Export the reducer properly
+export const userReducer = userSlice.reducer;

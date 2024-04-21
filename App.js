@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { store } from "./store/store.js";
 import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import { store } from "./store/store.js";
 import { supabase } from "./supabaseClient";
 import {
   HomeScreen,
@@ -46,7 +46,7 @@ function AuthNavigator() {
 
 function DrawerNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Navigator initialRouteName="Profile">
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Teams" component={TeamsScreen} />
       <Drawer.Screen name="Players" component={PlayersScreen} />
