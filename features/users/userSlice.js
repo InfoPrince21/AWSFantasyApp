@@ -36,7 +36,11 @@ const userSlice = createSlice({
   },
 });
 
+console.log("Slice creation:", userSlice);
+
+
+
 // Export the actions
 export const { updateUser } = userSlice.actions;
 // Correctly export the reducer
-export const userReducer = userSlice.reducer;
+export default userSlice.reducer;

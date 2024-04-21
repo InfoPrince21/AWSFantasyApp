@@ -28,6 +28,12 @@ import {
   SetupProfileScreen,
 } from "./screens";
 
+
+
+
+
+
+
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 

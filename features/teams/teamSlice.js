@@ -21,5 +21,7 @@ const teamSlice = createSlice({
   },
 });
 
+console.log("Slice creation:", teamSlice);
+
 export const { addUserToTeam, removeUserFromTeam } = teamSlice.actions;
-export const teamReducer = teamSlice.reducer;
+export default teamSlice.reducer;
