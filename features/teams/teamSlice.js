@@ -1,4 +1,3 @@
-// src/features/users/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const teamSlice = createSlice({
@@ -9,8 +8,18 @@ const teamSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Define synchronous reducers here
+    // Example synchronous reducer to add a user to the team
+    addUserToTeam(state, action) {
+      // Assuming action.payload contains the user object to be added
+      state.users.push(action.payload);
+    },
+    // Example synchronous reducer to remove a user from the team
+    removeUserFromTeam(state, action) {
+      // Assuming action.payload is the user id to be removed
+      state.users = state.users.filter((user) => user.id !== action.payload);
+    },
   },
 });
 
+export const { addUserToTeam, removeUserFromTeam } = teamSlice.actions;
 export const teamReducer = teamSlice.reducer;

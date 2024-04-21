@@ -1,4 +1,3 @@
-// src/features/users/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import fetchUsers from "./fetchUsers"; // Ensure this import is correct
 
@@ -10,7 +9,15 @@ const userSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Define synchronous reducers here
+    // Example synchronous reducer to update a user's details
+    updateUser(state, action) {
+      const index = state.users.findIndex(
+        (user) => user.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.users[index] = { ...state.users[index], ...action.payload };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -29,4 +36,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { updateUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
