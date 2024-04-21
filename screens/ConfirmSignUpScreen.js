@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet, Alert } from "react-native";
-import { supabase } from "../supabaseClient"; // Ensure this points to your initialized Supabase client
+import { supabase } from "../supabaseClient";
 
 const ConfirmEmailScreen = ({ route, navigation }) => {
-  const { email } = route.params; // Retrieve the email from navigation parameters
+  const { email } = route.params;
   const [code, setCode] = useState("");
 
   const confirmSignUp = async () => {
@@ -15,17 +15,41 @@ const ConfirmEmailScreen = ({ route, navigation }) => {
       return;
     }
 
+    // Generate a random user_id
+    const userId = Math.floor(Math.random() * 1000000);
+
     try {
-      // Verify the OTP using the parameters you specified
-      const { data, error } = await supabase.auth.verifyOtp({
-        token: code, // The OTP code entered by the user
-        email: email, // Email address to which the OTP was sent
-        type: "email", // The type of verification, which is email in this case
+      const { user, error } = await supabase.auth.verifyOtp({
+        token: code,
+        email: email,
+        type: "email",
       });
 
-      if (error) throw error;
-      Alert.alert("Success", "Email verified! You are now logged in.");
-      // navigation.navigate("LoginScreen"); // Navigate to login screen upon successful verification
+      if (error) {
+        throw error;
+      }
+
+      if (!error) {
+        const { data, error: insertError } = await supabase
+          .from("users")
+          .insert([{ user_id: userId, email: email }]); // Use the random userId here
+
+        if (insertError) {
+          throw insertError;
+        }
+
+        Alert.alert(
+          "Success",
+          "Email verified! User information added to the database. You are now logged in."
+        );
+        // Uncomment and modify the navigation line below as needed
+        // navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert(
+          "Verification Pending",
+          "Please verify your email to complete registration."
+        );
+      }
     } catch (error) {
       Alert.alert("Error", error.message);
     }
@@ -33,9 +57,10 @@ const ConfirmEmailScreen = ({ route, navigation }) => {
 
   const resendConfirmationCode = async () => {
     try {
-      // Trigger Supabase to resend the OTP to the user's email
       const { error } = await supabase.auth.api.sendEmailChangeToken(email);
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       Alert.alert(
         "Success",
         "Verification code sent again. Please check your email."
@@ -46,7 +71,7 @@ const ConfirmEmailScreen = ({ route, navigation }) => {
   };
 
   const goToLogin = () => {
-    navigation.navigate("LoginScreen"); // Provide an option to go to login page regardless of OTP verification
+    navigation.navigate("LoginScreen");
   };
 
   return (
