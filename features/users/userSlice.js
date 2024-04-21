@@ -1,6 +1,6 @@
 // src/features/users/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import fetchUsers from "./fetchUsers";
+import fetchUsers from "./fetchUsers"; // Ensure this import is correct
 
 const userSlice = createSlice({
   name: "user",
@@ -9,7 +9,9 @@ const userSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    // Define synchronous reducers here
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -27,5 +29,4 @@ const userSlice = createSlice({
   },
 });
 
-// Export the reducer properly
 export const userReducer = userSlice.reducer;
