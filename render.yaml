@@ -1,0 +1,9 @@
+services:
+- type: web
+  name: FantasyStaffWebApp
+  env: static
+  buildCommand: expo build:web
+  staticPublishPath: ./web-build
+  routes:
+    - source: /
+      destination: /index.html
